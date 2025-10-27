@@ -2,6 +2,7 @@ const express = require('express')
 const app = express();
 const PORT = 3000;
 const db = require("./models");
+const komik = require('./models/komik');
 app.use(express.json());
 app.use(express.urlencoded({ 
     extended: false 
@@ -20,3 +21,14 @@ db.sequelize.sync()
     .catch((err) => {
     console.log(err);
     })
+    
+// Endpoint untuk menambahkan komik baru    
+app.post("/komik", async (req, res) => {
+    const data = req.body;
+    try {
+        const komik = await db.Komik.create(data);
+        res.send(komik);
+    } catch (err) {
+        res.send(err);
+    }
+});
